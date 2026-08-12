@@ -3,217 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GadgetStore Management System</title>
+    <title>GadgetStore Pro Management System</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+        body{background:#f3eefb;line-height:1.6;}
 
-        body {
-            background-color: #f3eefb;
-            line-height: 1.6;
-        }
+        header{background:linear-gradient(135deg,#2d0c5e,#5b21b6);color:#fff;padding:22px;text-align:center;box-shadow:0 4px 14px rgba(45, 12, 94, 0.3);}
+        header h1{font-size:28px;letter-spacing:1px;color:#ffffff;}
 
-        header {
-            background: linear-gradient(135deg, #2d0c5e, #5b21b6);
-            color: #ffffff;
-            padding: 22px;
-            text-align: center;
-            box-shadow: 0 4px 14px rgba(45, 12, 94, 0.3);
-        }
+        .container{max-width:1400px;margin:20px auto;padding:0 15px;display:grid;grid-template-columns:380px 1fr;gap:20px;}
 
-        header h1 {
-            font-size: 28px;
-            letter-spacing: 1px;
-            color: #ffffff;
-        }
+        .panel{background:#fff;border-radius:12px;box-shadow:0 3px 12px rgba(75, 29, 150, 0.15);padding:25px;border-top:4px solid #6b21a8;}
+        .panel h2{color:#2d0c5e;margin-bottom:20px;border-bottom:2px solid #ddd6f3;padding-bottom:10px;}
 
-        .container {
-            max-width: 1400px;
-            margin: 20px auto;
-            padding: 0 15px;
-            display: grid;
-            grid-template-columns: 380px 1fr;
-            gap: 20px;
-        }
+        .form-group{margin-bottom:15px;}
+        label{display:block;font-weight:600;margin-bottom:6px;color:#000000;}
+        input,textarea{width:100%;padding:10px 12px;border:1px solid #bfa8e0;border-radius:8px;font-size:14px;color:#000000;}
+        input:focus,textarea:focus{outline:none;border-color:#6b21a8;box-shadow:0 0 0 3px rgba(107, 33, 168, 0.2);}
+        textarea{resize:vertical;min-height:80px;color:#000000;}
 
-        .panel {
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px rgba(75, 29, 150, 0.15);
-            padding: 25px;
-            border-top: 4px solid #6b21a8;
-        }
+        button.btn-simpan{background:linear-gradient(135deg,#6b21a8,#4b1d96);color:#fff;border:none;padding:12px 20px;border-radius:8px;font-weight:bold;cursor:pointer;width:100%;font-size:15px;transition:0.3s;}
+        button.btn-simpan:hover{background:linear-gradient(135deg,#5a189a,#3c1578);}
 
-        .panel h2 {
-            color: #2d0c5e;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #ddd6f3;
-            padding-bottom: 10px;
-        }
+        .katalog{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;}
+        .produk-card{background:#fff;border-radius:12px;box-shadow:0 3px 10px rgba(75, 29, 150, 0.12);overflow:hidden;transition:0.3s;border:1px solid #e9d5ff;}
+        .produk-card:hover{transform:translateY(-5px);box-shadow:0 6px 18px rgba(75, 29, 150, 0.2);}
+        .produk-card img{width:100%;height:200px;object-fit:cover;}
+        .produk-info{padding:15px;}
+        .produk-nama{font-size:18px;font-weight:bold;color:#000000;margin-bottom:8px;}
+        .produk-harga{font-size:17px;font-weight:bold;color:#7e22ce;margin-bottom:10px;}
+        .produk-desc{font-size:14px;color:#1f1f1f;margin-bottom:12px;}
+        video{width:100%;border-radius:8px;margin-bottom:12px;}
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+        .btn-beli{display:inline-block;background:linear-gradient(135deg,#6b21a8,#4b1d96);color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:bold;transition:0.3s;}
+        .btn-beli:hover{background:linear-gradient(135deg,#5a189a,#3c1578);}
 
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: #000000;
-        }
+        .status-pesanan{margin-top:25px;padding:15px;background:#faf5ff;border-radius:10px;border-left:4px solid #6b21a8;}
+        .status-pesanan h3{margin-bottom:12px;color:#000000;}
+        .status-item{padding:8px 12px;border-radius:6px;margin-bottom:8px;font-weight:500;color:#000000;}
+        .belum-bayar{background:#f3e8ff;}
+        .diproses{background:#e9d5ff;}
+        .dikirim{background:#d8b4fe;}
+        .selesai{background:#c4b5fd;}
 
-        input, textarea {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #bfa8e0;
-            border-radius: 8px;
-            font-size: 14px;
-            color: #000000;
-        }
-
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #6b21a8;
-            box-shadow: 0 0 0 3px rgba(107, 33, 168, 0.2);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-            color: #000000;
-        }
-
-        button.btn-simpan {
-            background: linear-gradient(135deg, #6b21a8, #4b1d96);
-            color: #ffffff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            font-size: 15px;
-            transition: 0.3s;
-        }
-
-        button.btn-simpan:hover {
-            background: linear-gradient(135deg, #5a189a, #3c1578);
-            transform: scale(1.02);
-        }
-
-        .katalog {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .produk-card {
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(75, 29, 150, 0.12);
-            overflow: hidden;
-            transition: 0.3s;
-            border: 1px solid #e9d5ff;
-        }
-
-        .produk-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 18px rgba(75, 29, 150, 0.2);
-        }
-
-        .produk-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .produk-info {
-            padding: 15px;
-        }
-
-        .produk-nama {
-            font-size: 18px;
-            font-weight: bold;
-            color: #000000;
-            margin-bottom: 8px;
-        }
-
-        .produk-harga {
-            font-size: 17px;
-            font-weight: bold;
-            color: #7e22ce;
-            margin-bottom: 10px;
-        }
-
-        .produk-desc {
-            font-size: 14px;
-            color: #1f1f1f;
-            margin-bottom: 12px;
-        }
-
-        video {
-            width: 100%;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            background: #000;
-        }
-
-        .btn-beli {
-            display: inline-block;
-            background: linear-gradient(135deg, #6b21a8, #4b1d96);
-            color: #ffffff;
-            padding: 10px 18px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .btn-beli:hover {
-            background: linear-gradient(135deg, #5a189a, #3c1578);
-        }
-
-        .status-pesanan {
-            margin-top: 25px;
-            padding: 15px;
-            background: #faf5ff;
-            border-radius: 10px;
-            border-left: 4px solid #6b21a8;
-        }
-
-        .status-pesanan h3 {
-            margin-bottom: 12px;
-            color: #000000;
-        }
-
-        .status-item {
-            padding: 8px 12px;
-            border-radius: 6px;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #000000;
-        }
-
-        .belum-bayar { background: #f3e8ff; }
-        .diproses  { background: #e9d5ff; }
-        .dikirim   { background: #d8b4fe; }
-        .selesai   { background: #c4b5fd; }
-
-        @media (max-width: 900px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-        }
+        @media(max-width:900px){.container{grid-template-columns:1fr;}}
     </style>
 </head>
 <body>
 
 <header>
-    <h1>GadgetStore Management System</h1>
+    <h1>GadgetStore Pro Management System</h1>
 </header>
 
 <div class="container">
@@ -237,9 +76,7 @@
                 <label>URL Gambar Produk</label>
                 <input type="url" id="gambarProduk" placeholder="https://..." required>
             </div>
-            <button type="button" class="btn-simpan" onclick="simpanProduk()">
-                💾 Simpan Produk ke Database
-            </button>
+            <button type="button" class="btn-simpan" onclick="simpanProduk()">💾 Simpan Produk ke Database</button>
         </form>
     </section>
 
@@ -255,10 +92,9 @@
                     <h3 class="produk-nama">Smartphone Premium</h3>
                     <p class="produk-harga">Rp 12.000.000</p>
                     <p class="produk-desc">Layar 120Hz, RAM 12GB, 256GB, Kamera 108MP</p>
-                    <!-- 🎬 VIDEO RESMI — PASTI MUNCUL & BUKAN KELINCI -->
-                    <video controls preload="metadata">
+                    <video controls>
                         <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
-                        Browser tidak mendukung tag video
+                        Browser tidak mendukung video
                     </video>
                     <a href="#" class="btn-beli">Beli Sekarang →</a>
                 </div>
@@ -271,10 +107,9 @@
                     <h3 class="produk-nama">Smartphone Lite</h3>
                     <p class="produk-harga">Rp 8.500.000</p>
                     <p class="produk-desc">Layar 90Hz, RAM 8GB, 128GB, Baterai 5000mAh</p>
-                    <!-- 🎬 VIDEO RESMI — PASTI MUNCUL -->
-                    <video controls preload="metadata">
+                    <video controls>
                         <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
-                        Browser tidak mendukung tag video
+                        Browser tidak mendukung video
                     </video>
                     <a href="#" class="btn-beli">Beli Sekarang →</a>
                 </div>
@@ -287,10 +122,9 @@
                     <h3 class="produk-nama">Laptop Ultra</h3>
                     <p class="produk-harga">Rp 18.500.000</p>
                     <p class="produk-desc">Layar 14" 120Hz, RAM 16GB, SSD 1TB, Core i7</p>
-                    <!-- 🎬 VIDEO RESMI — PASTI MUNCUL -->
-                    <video controls preload="metadata">
+                    <video controls>
                         <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
-                        Browser tidak mendukung tag video
+                        Browser tidak mendukung video
                     </video>
                     <a href="#" class="btn-beli">Beli Sekarang →</a>
                 </div>
@@ -310,17 +144,12 @@
 </div>
 
 <script>
-function simpanProduk() {
+function simpanProduk(){
     const nama = document.getElementById('namaProduk').value;
     const deskripsi = document.getElementById('deskripsiProduk').value;
     const harga = document.getElementById('hargaProduk').value;
     const gambar = document.getElementById('gambarProduk').value;
-
-    if (!nama || !deskripsi || !harga || !gambar) {
-        alert('⚠️ Lengkapi semua data produk!');
-        return;
-    }
-
+    if(!nama||!deskripsi||!harga||!gambar){alert('Lengkapi semua data!');return;}
     const daftar = document.getElementById('daftarProduk');
     const kartuBaru = document.createElement('div');
     kartuBaru.className = 'produk-card';
@@ -330,14 +159,14 @@ function simpanProduk() {
             <h3 class="produk-nama">${nama}</h3>
             <p class="produk-harga">${harga}</p>
             <p class="produk-desc">${deskripsi}</p>
-            <video controls preload="metadata">
+            <video controls>
                 <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
             </video>
             <a href="#" class="btn-beli">Beli Sekarang →</a>
         </div>`;
     daftar.appendChild(kartuBaru);
     document.getElementById('formProduk').reset();
-    alert('✅ Produk berhasil disimpan!');
+    alert('✅ Produk disimpan!');
 }
 </script>
 
