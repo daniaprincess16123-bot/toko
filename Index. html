@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Inventaris</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+        body{background:#f0f2f5}
+        /* Login */
+        #loginPage{display:flex;justify-content:center;align-items:center;height:100vh;background:linear-gradient(135deg,#4B0082,#2E0854)}
+        .login-box{background:#fff;padding:30px;border-radius:15px;width:90%;max-width:400px;box-shadow:0 0 20px rgba(0,0,0,0.3)}
+        .login-box h2{color:#2E0854;text-align:center;margin-bottom:20px}
+        .login-box input{width:100%;padding:12px;margin:8px 0;border:2px solid #4B0082;border-radius:8px;font-size:15px}
+        .login-box button{width:100%;padding:12px;background:#4B0082;color:#fff;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:5px}
+        .login-box button:hover{background:#6A0DAD}
+        .error{color:red;text-align:center;margin-top:10px;display:none}
+        /* Dashboard */
+        #adminPage{display:none}
+        .sidebar{background:#2E0854;width:220px;height:100vh;position:fixed;padding-top:20px}
+        .sidebar a{display:block;color:#fff;padding:12px 20px;text-decoration:none;margin:5px 10px;border-radius:8px}
+        .sidebar a:hover, .sidebar a.active{background:#6A0DAD}
+        .content{margin-left:220px;padding:20px}
+        .card{background:#fff;padding:20px;border-radius:10px;margin-bottom:15px;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+        h2{color:#2E0854;margin-bottom:15px}
+        input,select,button{padding:8px;margin:5px 0;border:1px solid #4B0082;border-radius:5px}
+        button{background:#4B0082;color:#fff;border:none;cursor:pointer;padding:8px 15px}
+        button:hover{background:#6A0DAD}
+        table{width:100%;border-collapse:collapse;margin-top:10px}
+        th,td{border:1px solid #ddd;padding:8px;text-align:left}
+        th{background:#4B0082;color:#fff}
+        .logout{background:#c0392b;margin-top:20px}
+        .page{display:none}
+    </style>
+</head>
+<body>
+<!-- HALAMAN LOGIN -->
+<div id="loginPage">
+    <div class="login-box">
+        <h2>🔐 Login Admin</h2>
+        <input type="text" id="user" placeholder="Username">
+        <input type="password" id="pass" placeholder="Password">
+        <button onclick="login()">Masuk</button>
+        <p class="error" id="err">Salah username/password!</p>
+        <p style="font-size:12px;text-align:center;margin-top:10px">Akun: Dania/123 &nbsp;|&nbsp; Admin/admin123</p>
+    </div>
+</div>
+
+<!-- HALAMAN ADMIN -->
+<div id="adminPage">
+    <div class="sidebar">
+        <a href="#" class="active" onclick="bukaMenu('barang')">📦 Input Barang / Edit</a>
+        <a href="#" onclick="bukaMenu('supplier')">🏢 Supplier</a>
+        <a href="#" onclick="bukaMenu('harga')">💰 Lihat Harga Barang</a>
+        <a href="#" onclick="bukaMenu('pembelian')">🛒 Lihat Pembelian</a>
+        <a href="#" class="logout" onclick="keluar()">🚪 Keluar</a>
+    </div>
+
+    <div class="content">
+        <!-- INPUT & EDIT BARANG -->
+        <div id="barang" class="page" style="display:block">
+            <div class="card">
+                <h2>Input & Edit Barang</h2>
+                <input type="text" id="kd" placeholder="Kode Barang">
+                <input type="text" id="nm" placeholder="Nama Barang">
+                <input type="number" id="stok" placeholder="Stok">
+                <input type="number" id="beli" placeholder="Harga Beli">
+                <input type="number" id="jual" placeholder="Harga Jual">
+                <button onclick="simpanBarang()">Simpan</button>
+                <button onclick="resetForm()">Batal</button>
+            </div>
+            <div class="card">
+                <h3>Daftar Barang</h3>
+                <table id="tabelBarang">
+                    <tr><th>Kode</th><th>Nama</th><th>Stok</th><th>Harga Beli</th><th>Harga Jual</th><th>Aksi</th></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- SUPPLIER -->
+        <div id="supplier" class="page">
+            <div class="card">
+                <h2>Data Supplier</h2>
+                <input type="text" id="namasup" placeholder="Nama Supplier">
+                <input type="text" id="kontak" placeholder="Kontak">
+                <input type="text" id="alamatsup" placeholder="Alamat">
+                <button onclick="simpanSupplier()">Simpan</button>
+            </div>
+            <div class="card">
+                <table id="tabelSup">
+                    <tr><th>Nama</th><th>Kontak</th><th>Alamat</th><th>Aksi</th></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- LIHAT HARGA -->
+        <div id="harga" class="page">
+            <div class="card">
+                <h2>Daftar Harga Barang</h2>
+                <table id="tabelHarga">
+                    <tr><th>Kode</th><th>Nama Barang</th><th>Harga Beli</th><th>Harga Jual</th></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- LIHAT PEMBELIAN -->
+        <div id="pembelian" class="page">
+            <div class="card">
+                <h2>Riwayat Pembelian</h2>
+                <table id="tabelBeli">
+                    <tr><th>Tanggal</th><th>Barang</th><th>Jumlah</th><th>Total Bayar</th><th>Supplier</th></tr>
+                    <tr><td>19-08-2026</td><td>Jaket</td><td>10</td><td>Rp 500.000</td><td>Supplier A</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const akun = [{u:'Dania',p:'123'},{u:'Admin',p:'admin123'}];
+let dataBarang=[], dataSup=[];
+
+function login(){
+    let u=document.getElementById('user').value.trim();
+    let p=document.getElementById('pass').value;
+    if(akun.find(x=>x.u==u && x.p==p)){
+        document.getElementById('loginPage').style.display='none';
+        document.getElementById('adminPage').style.display='block';
+    }else{document.getElementById('err').style.display='block'}
+}
+function keluar(){
+    document.getElementById('adminPage').style.display='none';
+    document.getElementById('loginPage').style.display='flex';
+    document.getElementById('user').value='';document.getElementById('pass').value='';
+}
+function bukaMenu(id){
+    document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+    document.getElementById(id).style.display='block';
+    document.querySelectorAll('.sidebar a').forEach(a=>a.classList.remove('active'));
+    event.target.classList.add('active');
+    if(id=='harga') tampilHarga();
+}
+function simpanBarang(){
+    let kd=document.getElementById('kd').value;
+    let nm=document.getElementById('nm').value;
+    let stok=document.getElementById('stok').value;
+    let beli=document.getElementById('beli').value;
+    let jual=document.getElementById('jual').value;
+    dataBarang.push({kd,nm,stok,beli,jual});
+    tampilBarang();resetForm();
+}
+function tampilBarang(){
+    let tbl=document.getElementById('tabelBarang');
+    tbl.innerHTML=`<tr><th>Kode</th><th>Nama</th><th>Stok</th><th>Beli</th><th>Jual</th><th>Aksi</th></tr>`;
+    dataBarang.forEach((b,i)=>{
+        tbl.innerHTML+=`<tr><td>${b.kd}</td><td>${b.nm}</td><td>${b.stok}</td><td>${b.beli}</td><td>${b.jual}</td>
+        <td><button onclick="editBarang(${i})">Edit</button> <button onclick="hapusBarang(${i})">Hapus</button></td></tr>`;
+    });
+}
+function editBarang(i){
+    let b=dataBarang[i];
+    document.getElementById('kd').value=b.kd;
+    document.getElementById('nm').value=b.nm;
+    document.getElementById('stok').value=b.stok;
+    document.getElementById('beli').value=b.beli;
+    document.getElementById('jual').value=b.jual;
+    dataBarang.splice(i,1);
+}
+function hapusBarang(i){dataBarang.splice(i,1);tampilBarang()}
+function resetForm(){
+    ['kd','nm','stok','beli','jual'].forEach(id=>document.getElementById(id).value='');
+}
+function tampilHarga(){
+    let tbl=document.getElementById('tabelHarga');
+    tbl.innerHTML=`<tr><th>Kode</th><th>Nama</th><th>Harga Beli</th><th>Harga Jual</th></tr>`;
+    dataBarang.forEach(b=>tbl.innerHTML+=`<tr><td>${b.kd}</td><td>${b.nm}</td><td>${b.beli}</td><td>${b.jual}</td></tr>`);
+}
+function simpanSupplier(){
+    let n=document.getElementById('namasup').value;
+    let k=document.getElementById('kontak').value;
+    let a=document.getElementById('alamatsup').value;
+    dataSup.push({n,k,a});
+    tampilSup();
+    document.getElementById('namasup').value='';document.getElementById('kontak').value='';document.getElementById('alamatsup').value='';
+}
+function tampilSup(){
+    let tbl=document.getElementById('tabelSup');
+    tbl.innerHTML=`<tr><th>Nama</th><th>Kontak</th><th>Alamat</th><th>Aksi</th></tr>`;
+    dataSup.forEach((s,i)=>tbl.innerHTML+=`<tr><td>${s.n}</td><td>${s.k}</td><td>${s.a}</td><td><button onclick="hapusSup(${i})">Hapus</button></td></tr>`);
+}
+function hapusSup(i){dataSup.splice(i,1);tampilSup()}
+</script>
+</body>
+</html>
